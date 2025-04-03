@@ -3,10 +3,13 @@ class Solution(object):
         n = len(nums)
         triplet = 0
 
-        for i in range(n - 2):
-            for j in range(i + 1, n - 1):
-                diff = nums[i] - nums[j]
-                for k in range(j + 1, n):
-                    triplet = max(triplet, diff * nums[k])
+        suffix = [0] * n
+        for i in range(n - 2, -1, -1):
+            suffix[i] = max(suffix[i + 1], nums[i + 1])
+
+        prefix = nums[0]
+        for i in range(1, n - 1):
+            triplet = max(triplet, (prefix - nums[i]) * suffix[i])
+            prefix = max(prefix, nums[i])
 
         return triplet
